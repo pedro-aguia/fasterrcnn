@@ -100,7 +100,7 @@ class CustomDataset(Dataset):
 
         # Box coordinates for xml files are extracted and corrected for image size given.
         # try:
-        print(annot_file_path)
+
         tree = et.parse(annot_file_path)
         root = tree.getroot()
         for member in root.findall("object"):
