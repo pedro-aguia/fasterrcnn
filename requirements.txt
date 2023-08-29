@@ -19,7 +19,6 @@ tqdm
 deep-sort-realtime
 
 # Logging----------------------------------
-wandb
 tensorboard
 
 # Model summary----------------------------
