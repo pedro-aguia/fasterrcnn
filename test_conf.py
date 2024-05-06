@@ -205,12 +205,14 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
     else:
         print("Confusion matrix, without normalization")
 
-    cm = cm.T
+    print(cm)
 
-    fig, ax = plt.subplots()
+    cm = np.round(cm, 2).T
+
+    fig, ax = plt.subplots(figsize=(10, 10))
     im = ax.imshow(cm, interpolation="nearest", cmap=cmap)
     ax.figure.colorbar(im, ax=ax)
-    # We want to show all ticks...
+    
     ax.set(
         xticks=np.arange(cm.shape[1]),
         yticks=np.arange(cm.shape[0]),
@@ -222,16 +224,16 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
         xlabel="True",
     )
 
-    # Rotate the tick labels and set their alignment.
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+    # Rotate y ticks
+    plt.setp(ax.get_yticklabels(), rotation=90, ha="center", rotation_mode="anchor")
 
-    # Loop over data dimensions and create text annotations.
     fmt = ".2f" if normalize else "d"
     thresh = cm.max() / 2.0
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
+            value = format(cm[i, j], fmt) if cm[i, j] != 0.00 else ''
             ax.text(
-                j, i, format(cm[i, j], fmt), ha="center", va="center", color="white" if cm[i, j] > thresh else "black"
+                j, i, value, ha="center", va="center", color="white" if cm[i, j] > thresh else "black"
             )
     fig.tight_layout()
     plt.xlim(-0.5, len(np.unique(y_true)) - 0.5)
