@@ -205,7 +205,7 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
     else:
         print("Confusion matrix, without normalization")
 
-    print(cm)
+    cm = cm.T
 
     fig, ax = plt.subplots()
     im = ax.imshow(cm, interpolation="nearest", cmap=cmap)
@@ -218,8 +218,8 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
         xticklabels=classes,
         yticklabels=classes,
         title=title,
-        ylabel="True label",
-        xlabel="Predicted label",
+        ylabel="Predicted",
+        xlabel="True",
     )
 
     # Rotate the tick labels and set their alignment.
@@ -414,12 +414,12 @@ def predecir(model_path, imgs_path, export_path, conf_thresh, output_path, iou_t
                 "GrB",
                 "GrL",
                 "GrT",
-                "PCo_Low-longitudinal",
-                "PCo_Low-random"
-                "PCo_Medium",
-                "PCo_High",
+                "PCoLL",
+                "PCoLR",
+                "PCoM",
+                "PCoH",
                 "Pel",
-                "background",
+                "background"
             ],
             title="Normalized confusion matrix",
         )
