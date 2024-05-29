@@ -203,16 +203,16 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
         cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
         print("Normalized confusion matrix")
     else:
-        print("Confusion matrix, without normalization")
-
-    print(cm)
+        print("Confusion matrix")
 
     cm = np.round(cm, 2).T
+
+    print(cm)
 
     fig, ax = plt.subplots(figsize=(10, 10))
     im = ax.imshow(cm, interpolation="nearest", cmap=cmap)
     ax.figure.colorbar(im, ax=ax)
-    
+
     ax.set(
         xticks=np.arange(cm.shape[1]),
         yticks=np.arange(cm.shape[0]),
@@ -231,10 +231,8 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
     thresh = cm.max() / 2.0
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
-            value = format(cm[i, j], fmt) if cm[i, j] != 0.00 else ''
-            ax.text(
-                j, i, value, ha="center", va="center", color="white" if cm[i, j] > thresh else "black"
-            )
+            value = format(cm[i, j], fmt) if cm[i, j] != 0.00 else ""
+            ax.text(j, i, value, ha="center", va="center", color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
     plt.xlim(-0.5, len(np.unique(y_true)) - 0.5)
     plt.ylim(len(np.unique(y_true)) - 0.5, -0.5)
@@ -411,18 +409,7 @@ def predecir(model_path, imgs_path, export_path, conf_thresh, output_path, iou_t
             clases_predecidas,
             path=conf_out,
             normalize=True,
-            classes=[
-                "Bac",
-                "GrB",
-                "GrL",
-                "GrT",
-                "PCoLL",
-                "PCoLR",
-                "PCoM",
-                "PCoH",
-                "Pel",
-                "background"
-            ],
+            classes=["Bac", "GrB", "GrL", "GrT", "PCoLL", "PCoLR", "PCoM", "PCoH", "Pel", "background"],
             title="Normalized confusion matrix",
         )
 
