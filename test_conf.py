@@ -196,7 +196,9 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
             title = "Confusion matrix, without normalization"
 
     # Compute confusion matrix
-    cm = confusion_matrix(y_true, y_pred)
+    cm = confusion_matrix(y_true, y_pred, labels=range(len(classes)))
+    cm = np.nan_to_num(cm)
+
     # Only use the labels that appear in the data
     # classes = classes[unique_labels(y_true, y_pred)]
     if normalize:
@@ -209,7 +211,7 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
 
     print(cm)
 
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(8, 8))
     im = ax.imshow(cm, interpolation="nearest", cmap=cmap)
     ax.figure.colorbar(im, ax=ax)
 
@@ -226,6 +228,9 @@ def plot_confusion_matrix(y_true, y_pred, classes, path, normalize=False, title=
 
     # Rotate y ticks
     plt.setp(ax.get_yticklabels(), rotation=90, ha="center", rotation_mode="anchor")
+
+    for edge, spine in ax.spines.items():
+        spine.set_visible(False)
 
     fmt = ".2f" if normalize else "d"
     thresh = cm.max() / 2.0
@@ -370,7 +375,7 @@ def predecir(model_path, imgs_path, export_path, conf_thresh, output_path, iou_t
             unions = union1 - intersections + union2
             iou = list(intersections / unions)
             if len(iou) == 0:
-                clases_reales.append(10)
+                clases_reales.append(9)
                 clases_predecidas.append(dictio["class"])
             else:
                 indice_aux = iou.index(max(iou))
@@ -383,10 +388,10 @@ def predecir(model_path, imgs_path, export_path, conf_thresh, output_path, iou_t
                         indices_aux.remove(indice_aux)
 
                 else:
-                    clases_reales.append(10)
+                    clases_reales.append(9)
 
         for indice_aux in indices_aux:
-            clases_predecidas.append(10)
+            clases_predecidas.append(9)
             clases_reales.append(names.index(categories_labeled[indice_aux]))
 
     myFile = open(os.path.join(output_path, "anotations.csv"), "w", newline="")
